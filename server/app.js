@@ -4,7 +4,6 @@ const dotEnvName = require("dotenv");
 const dbConnect = require("./dbConnect");
 dotEnvName.config({ path: "./.env" });
 const mainRouter = require("./routes");
-const bcrypt = require("bcrypt");
 
 const app = express();
 // middleware
