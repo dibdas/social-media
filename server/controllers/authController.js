@@ -59,15 +59,36 @@ const loginController = async (req, res) => {
       email: user.email,
       _id: user._id,
     });
+
+    const refreshToken = generateRefreshToken({
+      email: user.email,
+      _id: user._id,
+    });
     // console.log(accessToken);
-    return res.status(200).json({ user: `${user}`, token: `${accessToken}` });
+    return res.status(200).json({
+      user: `${user}`,
+      accessToken: `${accessToken}`,
+      refreshToken: `${refreshToken}`,
+    });
     res.send("signup");
   } catch (error) {
     console.log(error);
   }
 };
 
+// this api will check the refresh token validity and generate a new access token
+const refreshAccessTokenController = async (req, res) => {
+  const { refreshToken } = req.body;
+  try {
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET_KEY
+    );
+  } catch (error) {}
+};
+
 // internal functions, which is not  for exporting
+
 const generateAccessToken = (data) => {
   try {
     const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
@@ -82,8 +103,8 @@ const generateAccessToken = (data) => {
 };
 const generateRefreshToken = (data) => {
   try {
-    const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
-      expiresIn: "20s",
+    const token = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET_KEY, {
+      expiresIn: "1yr",
     });
     // console.log(token);
     return token;
