@@ -55,7 +55,7 @@ const loginController = async (req, res) => {
     }
     // generating the access token ,as email and password got matched and they are ok
     // inside the generateAccesstoken can pass anything here passing email and id
-    const accessToken = generateAccesstoken({
+    const accessToken = generateAccessToken({
       email: user.email,
       _id: user._id,
     });
@@ -68,7 +68,19 @@ const loginController = async (req, res) => {
 };
 
 // internal functions, which is not  for exporting
-const generateAccesstoken = (data) => {
+const generateAccessToken = (data) => {
+  try {
+    const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
+      expiresIn: "20s",
+    });
+    // console.log(token);
+    return token;
+  } catch (error) {
+    console.log(error);
+  }
+  // return token;
+};
+const generateRefreshToken = (data) => {
   try {
     const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
       expiresIn: "20s",
