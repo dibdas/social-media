@@ -1,6 +1,7 @@
 const Users = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { token } = require("morgan");
 
 const signupController = async (req, res) => {
   try {
@@ -69,11 +70,14 @@ const loginController = async (req, res) => {
 // internal functions, which is not  for exporting
 const generateAccesstoken = (data) => {
   try {
-    const token = jwt.sign(data, "aqwwqdadhcbkj1730jhbj", { expiresIn: "20s" });
+    const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
+      expiresIn: "20s",
+    });
     // console.log(token);
     return token;
   } catch (error) {
     console.log(error);
   }
+  // return token;
 };
 module.exports = { loginController, signupController };
