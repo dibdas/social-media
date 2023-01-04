@@ -77,14 +77,28 @@ const loginController = async (req, res) => {
 };
 
 // this api will check the refresh token validity and generate a new access token
+// as it is coming from the client via internet thats why sync, and these is not internal function
 const refreshAccessTokenController = async (req, res) => {
   const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(401).json({ message: `refresh token is required` });
+  }
   try {
     const decoded = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET_KEY
     );
-  } catch (error) {}
+    // in any scenario if the refresh token seems to be invalid  then generate the access token by login
+    // and create a new access token  , that accessToken creates the refresh token
+
+    // when refresh token got verified ,create the access token
+    const _id = decoded._id;
+    const email = decoded.email;
+    const accessToken = generateAccessToken({ _id, email });
+    return res.status(201).json({ newaccessToken: `${accessToken}` });
+  } catch (error) {
+    return res.status(401).json({ msg: `Invalid refresh token` });
+  }
 };
 
 // internal functions, which is not  for exporting
@@ -113,4 +127,8 @@ const generateRefreshToken = (data) => {
   }
   // return token;
 };
-module.exports = { loginController, signupController };
+module.exports = {
+  loginController,
+  signupController,
+  refreshAccessTokenController,
+};

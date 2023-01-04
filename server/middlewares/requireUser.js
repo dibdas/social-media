@@ -22,6 +22,7 @@ const userRequire = async (req, res, next) => {
   console.log(`access token inside middleware userRequire`, accesstoken);
   //   decode will the token and let you know the stuffs inside the token
   try {
+    // verifying the access token whether it is valid or invalid
     const verifiedToken = jwt.verify(
       accesstoken,
       process.env.ACCESS_TOKEN_PRIVATE_KEY
@@ -29,7 +30,9 @@ const userRequire = async (req, res, next) => {
     // updating the request object by put id into it and passing the request in this middleware
     //  for the next middleware or the function or next controller
     req._id = verifiedToken._id;
+    req.email = verifiedToken.email;
     next();
+    // if the key got expired or it is the invalid key then that will throw the error
   } catch (error) {
     console.log(error);
     return res.status(401).json({ message: `Invalid access key` });
