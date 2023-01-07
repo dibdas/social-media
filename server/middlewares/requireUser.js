@@ -41,10 +41,16 @@ const userRequire = async (req, res, next) => {
     req.email = verifiedToken.email;
     next();
     // if the key got expired or it is the invalid key then that will throw the error
-  } catch (error) {
-    console.log(error);
+
+    //  as error from try  catch block and the function error is contradicting,
+    //  therefore making the error from try catch block as  err
+  } catch (err) {
+    console.log(err);
+    // access token got expired
     // return res.status(401).json({ message: `Invalid access key` });
-    return res.send(error(401, { message: `Invalid access Key` }));
+    return res.send(
+      error(401, { message: `Acces token got expired so Invalid access Key` })
+    );
   }
   next();
 };
