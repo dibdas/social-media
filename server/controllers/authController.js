@@ -127,8 +127,14 @@ const refreshAccessTokenController = async (req, res) => {
     const _id = decoded._id;
     const email = decoded.email;
     const accessToken = generateAccessToken({ _id, email });
-    return res.status(201).json({ newaccessToken: `${accessToken}` });
-  } catch (error) {
+    console.log("refreshAccessToken", accessToken);
+
+    return res.send(success(201, { newaccessToken: `${accessToken}` }));
+
+    //  as error from try  catch block and the function error is contradicting,
+    //  therefore making the error from try catch block as  err
+  } catch (err) {
+    console.log(err);
     // return res.status(401).json({ msg: `Invalid refresh token` });
     return res.send(error(401, { msg: `Invalid refresh token` }));
   }
