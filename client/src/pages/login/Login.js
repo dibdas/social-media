@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../../utils/axiosClient";
+import {
+  KEY_ACCESS_TOKEN,
+  settingItemFromLocalStorage,
+} from "../../utils/localStorageManager";
 import "./Login.scss";
 
 function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const navigate = useNavigate();
   // console.log(axiosClient.baseUrl);
   async function handleSubmit(event) {
     event.preventDefault(); // it prevent to reload the page
@@ -16,6 +21,11 @@ function Login() {
       });
 
       console.log(result);
+      settingItemFromLocalStorage(
+        KEY_ACCESS_TOKEN,
+        JSON.stringify(result.accessToken)
+      );
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
