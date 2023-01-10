@@ -3,5 +3,5 @@ const {
   followerOrUnFollowUsers,
 } = require("../controllers/followersAndFollowing");
 const router = require("express").Router();
-router.post("/uf", userRequire, followerOrUnFollowUsers);
+router.post("/follow", userRequire, followerOrUnFollowUsers);
 module.exports = router;
