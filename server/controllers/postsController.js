@@ -37,4 +37,38 @@ const createPostController = async (req, res) => {
   }
 };
 
-module.exports = { getAllPostsController, createPostController };
+const updatePostController = async (req, res) => {
+  try {
+    const currentUserId = req._id;
+    const { postId, caption } = req.body;
+    const post = await Posts.findById(postId);
+    console.log("ppost owner", post.owner.toString());
+    if (!post) {
+      return res.send(error(404, `post not found`));
+    }
+    // checking whether the owner of the post is the currentuser or not, if not then the post cant be updated
+    if (post.owner.toString() !== currentUserId) {
+      return res.send(error(403, `unauthorized attempt to update the post`));
+    }
+    if (caption) {
+      post.caption = caption;
+      const savedPost = await post.save();
+      return res.send(success(201, `post successfully saved ${savedPost}`));
+    }
+  } catch (err) {
+    return res.send(error(500, err));
+  }
+};
+
+const deletePostcontroller = async (req, res) => {
+  try {
+  } catch (err) {
+    return res.send(error(500, err));
+  }
+};
+
+module.exports = {
+  getAllPostsController,
+  createPostController,
+  updatePostController,
+};
