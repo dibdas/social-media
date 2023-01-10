@@ -1,5 +1,6 @@
 const Users = require("../models/User");
 const { success, error } = require("../utils/responseWrapper");
+const Posts = require("../models/Post");
 
 const followerOrUnFollowUsers = async (req, res) => {
   try {
@@ -55,5 +56,25 @@ const followerOrUnFollowUsers = async (req, res) => {
   }
 };
 
-const getPostFollowingUsers = async (req, res) => {};
-module.exports = { followerOrUnFollowUsers };
+const getPostFollowingUsers = async (req, res) => {
+  try {
+    const currentUserId = req._id;
+    const currentUser = await Users.findById(currentUserId);
+    //   here we are trying to find out all the posts whos owner are inside the currentUser followings
+    //   if the currentUser is following four people , the post will be fetched if the owner of the posts
+    //   matches with currentUser followings list
+    const posts = await Posts.find({
+      // owner $in i.e inside currentUser followings
+      owner: {
+        //   $in inside operator so it is for inside
+        $in: currentUser.followings,
+      },
+    });
+    console.log("posts", posts);
+    return res.send(success(201, posts));
+  } catch (err) {
+    console.log(err);
+    return res.send(error(500, err));
+  }
+};
+module.exports = { followerOrUnFollowUsers, getPostFollowingUsers };
