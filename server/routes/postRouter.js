@@ -4,6 +4,7 @@ const {
 const {
   getAllPostsController,
   createPostController,
+  updatePostController,
 } = require("../controllers/postsController");
 const userRequire = require("../middlewares/requireUser");
 
@@ -12,4 +13,5 @@ const router = require("express").Router();
 router.get("/all", userRequire, getAllPostsController);
 router.post("/new", userRequire, createPostController);
 router.post("/like", userRequire, likeandUnlikePostController);
+router.put("/update", userRequire, updatePostController);
 module.exports = router;
