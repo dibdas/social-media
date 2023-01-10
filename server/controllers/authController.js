@@ -6,13 +6,14 @@ const { error, success } = require("../utils/responseWrapper");
 
 const signupController = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { email, password, name } = req.body;
+    if (!email || !password || !name) {
       //   return res.status(400).json({ text: `All fields are required` });
       //   sending the response in the wrapper format
       return res.send(error(400, { text: `All fields are required` }));
     }
-    const oldUser = await Users.findOne({ email });
+    // select(+password) '+' will show the property, '-' will not show the property
+    const oldUser = await Users.findOne({ email }).select("-password");
     if (oldUser) {
       //   return res.status(409).json({ text: `Email already registered` });
       return res.send(error(409, { text: `Email already registered` }));
@@ -31,6 +32,7 @@ const signupController = async (req, res) => {
     // OR
     const creatingUser = new Users({
       email,
+      name,
       password: hashedPassword,
     });
     const user = await creatingUser.save();
@@ -38,18 +40,20 @@ const signupController = async (req, res) => {
     return res.send(success(201, { user }));
 
     res.send("signup");
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
+    return res.send(error(500, { msg: err }));
   }
 };
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       //   return res.status(400).json({ text: `all fields required` });
       return res.send(error(400, { text: `All fields are required` }));
     }
-    const user = await Users.findOne({ email });
+    const user = await Users.findOne({ email }).select("+password");
     console.log(user); // whole user data is coming not only email and password fields
     if (!user) {
       //   return res.status(404).json({ text: `email does not exist` });
@@ -89,8 +93,9 @@ const loginController = async (req, res) => {
       success(200, { user: `${user}`, accessToken: `${accessToken}` })
     );
     res.send("signup");
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
+    return res.send(error(500, { err }));
   }
 };
 
@@ -145,7 +150,7 @@ const refreshAccessTokenController = async (req, res) => {
 const generateAccessToken = (data) => {
   try {
     const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
-      expiresIn: "20s",
+      expiresIn: "30m",
     });
     // console.log(token);
     return token;
