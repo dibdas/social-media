@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { error, success } = require("../utils/responseWrapper");
+// after catch there cant be any next() function
+// if it has try catch block only try block has the next() function
 
 const userRequire = async (req, res, next) => {
   console.log(`I am inside middleware `);
@@ -39,7 +41,7 @@ const userRequire = async (req, res, next) => {
     //  for the next middleware or the function or next controller
     req._id = verifiedToken._id;
     req.email = verifiedToken.email;
-    next();
+    next(); // next () goes to the next controller or middleware
     // if the key got expired or it is the invalid key then that will throw the error
 
     //  as error from try  catch block and the function error is contradicting,
@@ -52,6 +54,7 @@ const userRequire = async (req, res, next) => {
       error(401, { message: `Acces token got expired so Invalid access Key` })
     );
   }
-  next();
+  // after catch there cant be any next() function
+  // if it has try catch block only try block has the next() function
 };
 module.exports = userRequire;
