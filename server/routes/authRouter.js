@@ -10,4 +10,5 @@ router.post("/login", loginController);
 // router.post("/refresh", refreshAccessTokenController);
 // transforming '/refresh' into GET request as we are not passing the refresh token in the body JSON
 router.get("/refresh", refreshAccessTokenController);
+router.post("/logout", loginController);
 module.exports = router;
