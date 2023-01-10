@@ -80,7 +80,7 @@ const loginController = async (req, res) => {
     // console.log(accessToken);
     // cookieName is the name of the cookie
     res.cookie("cookieName", refreshToken, {
-      httpOnly: true, // cannot be accessed by frontend
+      httpOnly: true, // cannot be accessed by frontend, cant be accessed by any javascript
       secure: true, // for https it is secured while attaching SSL certificates
     });
     // return res.status(200).json({
@@ -170,6 +170,25 @@ const generateRefreshToken = (data) => {
     console.log(error);
   }
   // return token;
+};
+
+const logoutController = async (req, res) => {
+  // while performing the logout functionality from the backend side we be able to
+  // delete the cookie of the frontend, so it wont be able to refresh in the future
+  // but  when logout being called , it is the frontend responsibility
+  // access token should be deleted from the local storage
+  // therefore the backend will only be able to delete the refresh token so the user
+  // wont be able to refresh in the future
+  // deleting the access token is the responsibility of the frontend
+  try {
+    res.clearCookie("	cookieName", {
+      httpOnly: true, // cannot be accessed by frontend, cant be accessed by any javascript
+      secure: true, // for https it is secured while attaching SSL certificates, it should work inside https
+    });
+    return res.send(success(200, `user logout successfully `));
+  } catch (err) {
+    res.send(error(500, err));
+  }
 };
 module.exports = {
   loginController,
