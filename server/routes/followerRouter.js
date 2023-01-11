@@ -7,5 +7,8 @@ const {
 const router = require("express").Router();
 router.post("/follow", userRequire, followerOrUnFollowUsers);
 router.get("/getpostsfollowing", userRequire, getPostFollowingUsers);
+//deletemyprofile
+//getUserP
+// getMyPost
 
 module.exports = router;

@@ -190,8 +190,70 @@ const logoutController = async (req, res) => {
     res.send(error(500, err));
   }
 };
+
+const deleteMyProfileController = async (req, res) => {
+  try {
+    const currentUserId = req._id;
+    const currentUser = await Users.find(currentUserId);
+    if (!currentUser) {
+      return res.send(error(404, "user not found"));
+    }
+    await Posts.deleteMany({ owner: currentUser });
+
+    // removing myself from the followers following list
+
+    currentUser.followers.forEach(async (followerId) => {
+      const follower = await Users.findById(followerId); // fetching the follower in User model
+      if (!follower) {
+        return res.send(error(404, `no follower of current User found`));
+      }
+      const index = follower.followings.indexOf(currentUserId); // getting index inside follower following list
+      if (!index) {
+        return res.send(
+          error(404, `no followings of the current user follower  found `)
+        );
+      }
+      follower.followings.splice(index, 1);
+      await follower.save();
+    });
+
+    // removing myself from the followings followers
+    currentUser.followings.forEach(async (followingId) => {
+      const following = await Users.findById(followingId);
+      if (!following) {
+        return res.send(error(404, `no followings of the current user found `));
+      }
+      const index = following.followers.indexOf(following);
+      if (!index) {
+        return res.send(
+          error(404, `no follower of the current user followings  found `)
+        );
+      }
+      following.followers.splice(index, 1);
+      await following.save();
+    });
+
+    // removing likes from the Post
+    const allPosts = await Posts.find();
+    allPosts.forEach(async (post) => {
+      const index = post.like.indexOf(currentUserId);
+      post.like.splice(index, 1);
+      await post.save();
+    });
+    //delete User
+    await currentUser.remove();
+    res.clearCookie("	cookieName", {
+      httpOnly: true,
+      secure: true,
+    });
+  } catch (err) {
+    return res.send(error(500, err));
+  }
+};
 module.exports = {
   loginController,
   signupController,
   refreshAccessTokenController,
+  logoutController,
+  deleteMyProfileController,
 };
