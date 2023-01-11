@@ -14,6 +14,9 @@ const createPostController = async (req, res) => {
   try {
     const owner = req._id;
     const { caption } = req.body;
+    if (!caption) {
+      return res.send(error(400, `all field are required`));
+    }
     // console.log("owner", owner);
     const user = await Users.findById(owner);
     // console.log(user);
@@ -62,6 +65,58 @@ const updatePostController = async (req, res) => {
 
 const deletePostcontroller = async (req, res) => {
   try {
+    const currentUserId = req._id;
+    const { postId } = req.body;
+
+    const post = await Posts.findById(postId);
+
+    const currentUser = await Users.findById(currentUserId);
+
+    if (!post) {
+      return res.send(error(404, `post not found`));
+    }
+    if (currentUserId !== post.owner.toString()) {
+      return res.send(error(409, "unauthorized to delete the post "));
+    }
+    const index = currentUser.posts.indexOf(postId);
+    console.log(index);
+    currentUser.posts.splice(index, 1);
+    await currentUser.save();
+    await post.remove();
+    return res.send(success(200, `successfully removed the post`));
+  } catch (err) {
+    return res.send(error(500, err));
+  }
+};
+
+const getMyPosts = async (req, res) => {
+  try {
+    const currentUserId = req._id;
+    // getting all the post where the owner is equal to currentuser Id
+    // populate helps in fetching all the details whoever liked the post
+    // populate can happen as we have defined ref:"users" in the postSchema
+    // we can do populate here , it is because , we have done reference in the postSchema
+    const allMyPost = await Posts.find({ owner: currentUserId }).populate(
+      "likes"
+    );
+    return res.send(success(200, allMyPost));
+  } catch (err) {
+    return res.send(error(500, err));
+  }
+};
+const getUserPostController = async (req, res) => {
+  try {
+    const currentUserId = req._id;
+    const { userId } = req.body;
+    if (!userId) {
+      return res.send(error(404, `userId reqired`));
+    }
+    const allUserPost = await Posts.find({ owner: userId }).populate("likes");
+    if (allUserPost.length === 0) {
+      return res.send(error(404, `no post available`));
+    } else {
+      return res.send(success(200, { allUserPost }));
+    }
   } catch (err) {
     return res.send(error(500, err));
   }
@@ -71,4 +126,7 @@ module.exports = {
   getAllPostsController,
   createPostController,
   updatePostController,
+  deletePostcontroller,
+  getMyPosts,
+  getUserPostController,
 };
