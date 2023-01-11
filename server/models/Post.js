@@ -16,6 +16,8 @@ const postSchema = mongoose.Schema({
   },
   likes: [
     {
+      // while populating mongodb knows the objectId is present in the user table
+      // in order to do the populate we must do the refrence
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
