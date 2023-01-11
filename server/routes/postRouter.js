@@ -5,6 +5,9 @@ const {
   getAllPostsController,
   createPostController,
   updatePostController,
+  deletePostcontroller,
+  getMyPosts,
+  getUserPostController,
 } = require("../controllers/postsController");
 const userRequire = require("../middlewares/requireUser");
 
@@ -14,4 +17,7 @@ router.get("/all", userRequire, getAllPostsController);
 router.post("/new", userRequire, createPostController);
 router.post("/like", userRequire, likeandUnlikePostController);
 router.put("/update", userRequire, updatePostController);
+router.delete("/delete", userRequire, deletePostcontroller);
+router.get("/mine", userRequire, getMyPosts);
+router.get("/user", userRequire, getUserPostController);
 module.exports = router;
