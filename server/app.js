@@ -13,6 +13,7 @@ app.use(express.json());
 // morgan is used to generate the logs, that helps in debugging
 app.use(morgan("common"));
 app.use(cookieParser());
+// cors should be used above the main route
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 const PORT = process.env.PORT || 9000;
 app.get("/", (req, res) => {
