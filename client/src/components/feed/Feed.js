@@ -13,7 +13,11 @@ function Feed() {
           <Post />
           <Post />
         </div>
-        <div className="right-side">r</div>
+        <div className="right-side">
+          <div className="following">
+            <h3 className="title">You are following</h3>
+          </div>
+        </div>
       </div>
     </div>
   );
