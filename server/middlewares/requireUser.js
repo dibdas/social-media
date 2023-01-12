@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const Users = require("../models/User");
 const { error, success } = require("../utils/responseWrapper");
 // after catch there cant be any next() function
 // if it has try catch block only try block has the next() function
@@ -33,14 +34,27 @@ const userRequire = async (req, res, next) => {
   //   decode will the token and let you know the stuffs inside the token
   try {
     // verifying the access token whether it is valid or invalid
-    const verifiedToken = jwt.verify(
+    // checking whether the web token i.e the access is made by us or not
+    // accesstoken is getting verified and decoded
+    const decodedVerifiedToken = jwt.verify(
       accesstoken,
       process.env.ACCESS_TOKEN_PRIVATE_KEY
     );
     // updating the request object by put id into it and passing the request in this middleware
     //  for the next middleware or the function or next controller
-    req._id = verifiedToken._id;
-    req.email = verifiedToken.email;
+
+    req._id = decodedVerifiedToken._id; // gettig id from the decoded token
+    req.email = decodedVerifiedToken.email; // geting the email from the decode token
+    console.log("req.email", req.email);
+    // req user also means that the user should be present inside the database also
+    // not just being the valid access token ,
+    // req user should be there unside the database also
+    // doing a database call to check whether the user present inside the database or not
+    const user = await Users.findById(req._id);
+    if (!user) {
+      return res.send(error(404, "user not found"));
+    }
+
     next(); // next () goes to the next controller or middleware
     // if the key got expired or it is the invalid key then that will throw the error
 
