@@ -1,4 +1,4 @@
-const KEY_ACCESS_TOKEN = "access_token";
+const KEY_ACCESS_TOKEN = "access_token_key";
 
 // call this function to check whether you are login or logout
 function gettingItemFromLocalStorage(key) {
