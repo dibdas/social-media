@@ -19,3 +19,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+:root{
+  --border-color:grey;
+  --accent-color:rgba(0, 149, 255, 0.793);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+h1,h2,h3,h4,h5,h6{
+  color: rgba(53, 48, 48, 0.55);
+}
+h3,h6{
+  font-weight: 400;
+}
+p{
+  font-size: 1rem;
+  color:rgba(165, 136, 42, 0.753);
+}
+.hover-link{
+  cursor: pointer;
+}
+.hover-link:active{
+  color:rgba(125, 15, 234, 0.823);
+}
+.container{
+  max-width: 50vw;
+  margin-inline: auto;
+}

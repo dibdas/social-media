@@ -1,0 +1,12 @@
+.navbar{
+    height:10vh;
+    border: 1px solid var(--border-color);
+    .container{
+        
+        height: 100%;
+        display: flex ;
+        justify-content: space-between;
+        
+        align-items: center;
+    }
+}

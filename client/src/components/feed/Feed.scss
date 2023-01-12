@@ -1,0 +1,14 @@
+.feed{
+    .container{
+        display: flex;
+    }
+    .left-side{
+        flex:2;
+        // background-color: rebeccapurple;
+        height:80vh;
+    }
+    .right-side{
+        flex:1;
+        background-color: khaki;
+    }
+}
