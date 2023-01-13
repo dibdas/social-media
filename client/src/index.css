@@ -45,6 +45,29 @@ p{
   color:rgba(125, 15, 234, 0.823);
 }
 .container{
-  max-width: 50vw;
+  max-width: 55vw;
   margin-inline: auto;
+}
+.btn-primary{
+  background-color: var(--accent-color);
+  color: wheat;
+}
+.btn-primary:hover{
+  background-color: rgba(215, 163, 41, 0.982);
+}
+.btn-secondary{
+  border:2px solid var(--accent-color);
+  color:var(--accent-color);
+  
+}
+.btn-secondary:active{
+  background-color: rgba(185, 96, 180, 0.846);
+}
+.btn-primary,.btn-secondary{
+  cursor: pointer;
+  margin-top: 0.5em;
+  border-radius:5px;
+  font-weight: bold;
+  border: none;
+
 }

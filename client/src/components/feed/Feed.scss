@@ -1,15 +1,26 @@
 .feed{
     .container{
         display: flex;
-        gap:0.3em;
+        gap:0.4em;
+        overflow: hidden;
     }
     .left-side{
         flex:2;
         // background-color: rebeccapurple;
         height:80vh;
+        overflow-y: auto;
     }
     .right-side{
         flex:1;
         background-color: khaki;
+        margin-top: 0.4em;
+        padding: 0.5em;
+    }
+    .suggestions{
+        margin-top: 0.2em;
+    }
+    .title{
+        text-align: center;
+        margin-block: 0.2em;
     }
 }
