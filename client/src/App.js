@@ -6,6 +6,7 @@ import Home from "./pages/home/Home";
 import RequireUser from "./components/RequireUser";
 import Feed from "./components/feed/Feed";
 import Profile from "./components/profile/Profile";
+import UpdateProfile from "./components/updateProfile/UpdateProfile";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             the Home component , and then inside the outlet the Profile
             component will open */}
             <Route path="/profile/:userId" element={<Profile />} />
+            <Route path="/updateprofile/:userId" element={<UpdateProfile />} />
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />
