@@ -3,14 +3,21 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   // <React.StrictMode>
   //   <App />
   // </React.StrictMode>
+
   <BrowserRouter>
-    <App />
+    {/* Provider can be written inside or outside the BrowserRouter, they are independent to each other */}
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>
 );
 
