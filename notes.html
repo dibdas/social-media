@@ -1,3 +1,49 @@
 JWT
 in order to decode the JWT token go to jwt.io and paste the token
-use secret key to verify the valid or invalid signature 
+use secret key to verify the valid or invalid signature
+
+Authorization header contains bearer spaces token
+
+GENERATE SECRET KEY
+type node in terminal, write cryto  then  crypto.randomBytes(64).toString('hex')
+
+Access token goes to local storage, refresh token goes to cookies
+not putting refresh token in local storage , it is because local storage is very suseptible to
+ XSS attacks
+
+ XSS - cross site scripting vulnerability,
+
+ XSS can also access cookies , but we keep cookies safe by introducing a flag named as httponly cookie
+ httponly cookie cannot be accessed by javascript , therefore httponly cookies can only be accessed
+ by their servers only
+
+ we cant put accesstoken in cookies , it is because it cant be accessed by javascript, as we need to
+ access the the token in order to check whether user is logged in or not
+
+ //COOKIES
+ Cookies are bits of information that used by server , to store info in the frontend, which makes sure
+ that the data coming to the frontend is a valid data
+
+
+ CORS
+ cross origin resource sharing...,
+ whenever you need to share data between resources and the resources is located at different
+ locations , need to use CORS
+
+ try to watch the axios documentation, baseURL if not properly written, it will give error
+const axiosClient = axios.create({
+    // we can define the baseURL here , so that we dont have to write or repeat it again
+    // it should baseURL.., dont mis spell it , it will give error
+    baseURL: "http://localhost:7000/api",
+    //   without withCredentials cookies wont be send from frontend to backend
+    withCredentials: true,
+  });
+  export default axiosClient;
+
+  INTERCEPTORS
+  two interceptors request and response interceptors
+
+
+  after doing the process.env restart the client and server app
+
+  {/* Provider can be written inside or outside the BrowserRouter, they are independent to each other
