@@ -35,7 +35,7 @@ const userRequire = async (req, res, next) => {
   try {
     // verifying the access token whether it is valid or invalid
     // checking whether the web token i.e the access is made by us or not
-    // accesstoken is getting verified and decoded
+    // accesstoken is getting verified and also decoded
     const decodedVerifiedToken = jwt.verify(
       accesstoken,
       process.env.ACCESS_TOKEN_PRIVATE_KEY
@@ -43,8 +43,8 @@ const userRequire = async (req, res, next) => {
     // updating the request object by put id into it and passing the request in this middleware
     //  for the next middleware or the function or next controller
 
-    req._id = decodedVerifiedToken._id; // gettig id from the decoded token
-    req.email = decodedVerifiedToken.email; // geting the email from the decode token
+    req._id = decodedVerifiedToken._id; // gettig id from the decoded token and sending it as request to the next function
+    req.email = decodedVerifiedToken.email; // geting the email from the decode token and it as request to the next function
     console.log("req.email", req.email);
     // req user also means that the user should be present inside the database also
     // not just being the valid access token ,
