@@ -6,10 +6,23 @@
     .left-side{
         flex:1;
         text-align: center;
-        img{
+        .input-user-image {
+            display: flex;
+            align-items: center;
+            border:2px dashed solid red;
+            justify-content: center;
+            width:90%;
+            height:20vh;
+            cursor: pointer;
+            img{
             width:6em;
             height:6em;
             border-radius: 50%;
+            object-fit: cover;
+            }
+            .input-Image{
+                display: none;
+            }
         }
            
 
