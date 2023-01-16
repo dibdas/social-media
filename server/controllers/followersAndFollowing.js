@@ -77,4 +77,18 @@ const getPostFollowingUsers = async (req, res) => {
     return res.send(error(500, err));
   }
 };
-module.exports = { followerOrUnFollowUsers, getPostFollowingUsers };
+
+const getMyInfo = async (req, res) => {
+  try {
+    const userId = req._id;
+    const user = await Users.findById(userId);
+    if (!user) {
+      return res.send(error(404, `user not found`));
+    } else {
+      return res.send(success(200, { user }));
+    }
+  } catch (err) {
+    return res.send(error(500, err));
+  }
+};
+module.exports = { followerOrUnFollowUsers, getPostFollowingUsers, getMyInfo };
