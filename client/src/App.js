@@ -7,10 +7,37 @@ import RequireUser from "./components/RequireUser";
 import Feed from "./components/feed/Feed";
 import Profile from "./components/profile/Profile";
 import UpdateProfile from "./components/updateProfile/UpdateProfile";
+import { useSelector } from "react-redux";
+import { useRef, useEffect } from "react";
+import LoadingBar from "react-top-loading-bar";
 
 function App() {
+  //  inside the appConfigReducer we the all the state,out of all the state , we get is Loading
+  const isLoading = useSelector((state) => state.appConfigReducer.isLoading);
+  const loadingRef = useRef(null);
+
+  useEffect(() => {
+    if (isLoading) {
+      // in the beginning loadingRef may be null thats putting loadingRef.current?
+      // loadingRef.current?.complete means if the value of loadingRef.current is null
+      // then dont call complete() function thus '?' saving us from the null pointer acceptor
+      // loadingRef.current.complete(); i.e without '?' means even if the value of the
+      // loadingRef.current is null the comlpete() function will be called
+
+      loadingRef.current?.continuousStart();
+    } else {
+      // loadingRef.current?.continuousStart means if the value of loadingRef.current is null
+      // then dont call continuousStart() function
+      // loadingRef.current.continuousStart();i.e without'?' means even if the the value of the
+      // loadingRef.current is null , the continuousStart() function will be called
+
+      loadingRef.current?.complete();
+    }
+  }, [isLoading]);
+
   return (
     <div className="App">
+      <LoadingBar color="#f11946" ref={loadingRef} height={6} />
       <Routes>
         <Route element={<RequireUser />}>
           {/* protected Route */}
