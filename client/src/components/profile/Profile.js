@@ -3,8 +3,12 @@ import Post from "../post/Post";
 import "./Profile.scss";
 import userImg from "../../assets/superhero.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Profile() {
+  const myProfileInfo = useSelector(
+    (state) => state.appConfigReducer.myProfile
+  );
   const navigate = useNavigate();
   return (
     <div className="Profile">
@@ -26,7 +30,7 @@ function Profile() {
             <button className="follow btn-primary">follow</button>
             <button
               className="update-profile btn-secondary"
-              onClick={() => navigate("/updateprofile/ghyu")}
+              onClick={() => navigate(`/updateprofile/${myProfileInfo?._id}`)}
             >
               Update Profile
             </button>
