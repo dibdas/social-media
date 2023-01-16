@@ -88,12 +88,13 @@ axiosClient.interceptors.response.use(
     // access token got expired
     // checking the statusCode and also the checking the Whether the original request has been retried
     // or not , if not then retry the original request
-
+    // means access token has expired
     if (statusCode === 401 && !originalRequest._retry) {
       // access token expired
       // while calling the refresh api we may get the error , it is beacuse of the refresh token
       // may have got expired after 1yr i.e the validity is 1yr , then it will return the error
       console.log("12");
+      originalRequest._retry = true;
       // const response = await axiosClient.get("/auth/refresh");
       // instead of axiosClient we did axios.create it is because of the axiosClient which was previously
       // defined before would have called the refresh api for refresh token and that would have intercepted
@@ -128,6 +129,12 @@ axiosClient.interceptors.response.use(
 
         return axios(originalRequest);
         // dont call the axiosClient , it will choose the previous authorization header not th recent one
+        // issues coming while refresing the access Token
+      } else {
+        //if we get the error from the refresh api
+        removingItemFromLocalStorage(KEY_ACCESS_TOKEN);
+        window.location.replace("/login", "_self");
+        return Promise.reject(axiosClient.data.error);
       }
     }
     // if the error is neither 401 nor refresh api error then send the response error where the
