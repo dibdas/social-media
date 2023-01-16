@@ -13,5 +13,6 @@ router.post("/login", loginController);
 // transforming '/refresh' into GET request as we are not passing the refresh token in the body JSON
 router.get("/refresh", refreshAccessTokenController);
 router.post("/logout", loginController);
-router.post("/delprofile", userRequire, deleteMyProfileController);
+router.post("/deleteprofile", userRequire, deleteMyProfileController);
+router.post("/updatemyprofile");
 module.exports = router;
