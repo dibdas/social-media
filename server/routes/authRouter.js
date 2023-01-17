@@ -3,6 +3,7 @@ const {
   loginController,
   refreshAccessTokenController,
   deleteMyProfileController,
+  updateMyProfileContoller,
 } = require("../controllers/authController");
 const userRequire = require("../middlewares/requireUser");
 
@@ -14,5 +15,5 @@ router.post("/login", loginController);
 router.get("/refresh", refreshAccessTokenController);
 router.post("/logout", loginController);
 router.post("/deleteprofile", userRequire, deleteMyProfileController);
-router.post("/updatemyprofile");
+
 module.exports = router;
