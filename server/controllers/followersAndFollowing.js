@@ -1,6 +1,7 @@
 const Users = require("../models/User");
 const { success, error } = require("../utils/responseWrapper");
 const Posts = require("../models/Post");
+const cloudinary = require("cloudinary").v2;
 
 const followerOrUnFollowUsers = async (req, res) => {
   try {
@@ -91,4 +92,45 @@ const getMyInfo = async (req, res) => {
     return res.send(error(500, err));
   }
 };
-module.exports = { followerOrUnFollowUsers, getPostFollowingUsers, getMyInfo };
+
+const updateMyProfileContoller = async (req, res) => {
+  try {
+    const { name, bio, userImage } = req.body;
+    const user = await Users.findById(req._id);
+
+    if (!user) {
+      return res.send(error(404, `user not found`));
+    }
+    if (name) {
+      user.name = name;
+    }
+    if (bio) {
+      user.bio = bio;
+    }
+    if (userImage) {
+      // image is being uploaded here
+      const cloudImage = await cloudinary.uploader.upload(userImage, {
+        // userProfileImage this is the folder inside the cloudinary
+        folder: "userProfileImage",
+      }); // image is being uploaded here
+
+      user.avatar = {
+        url: cloudImage.secure_url, //we use url when we need to load the image somewhere
+        publicId: cloudImage.public_id, // publicId is used , in order to find the image inside the cloudinary
+      };
+    }
+    await user.save();
+    console.log("userupdated", user);
+    return res.send(success(200, { user }));
+  } catch (err) {
+    console.log(err);
+    return res.send(error(500, err));
+  }
+};
+
+module.exports = {
+  followerOrUnFollowUsers,
+  getPostFollowingUsers,
+  getMyInfo,
+  updateMyProfileContoller,
+};
