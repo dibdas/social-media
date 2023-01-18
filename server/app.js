@@ -17,8 +17,9 @@ cloudinary.config({
 });
 
 const app = express();
+
 // middleware
-app.use(express.json());
+app.use(express.json({ limit: "10mb" })); // limit the size of the image file
 // morgan is used to generate the logs, that helps in debugging
 app.use(morgan("common"));
 app.use(cookieParser());
