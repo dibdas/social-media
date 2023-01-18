@@ -1,6 +1,7 @@
 const { error, success } = require("../utils/responseWrapper");
 const Posts = require("../models/Post");
 const Users = require("../models/User");
+const cloudinary = require("cloudinary").v2;
 
 const getAllPostsController = async (req, res) => {
   console.log(req._id);
@@ -13,16 +14,30 @@ const createPostController = async (req, res) => {
   // req._id will come from the middleware , frontend does not need send this id
   try {
     const owner = req._id;
-    const { caption } = req.body;
+    // const { caption } = req.body;
+    const { caption, postImage } = req.body;
+
     if (!caption) {
       return res.send(error(400, `all field are required`));
     }
+    if (!postImage) {
+      return req.send(error(400, `post Image required `));
+    }
+
+    const cloudImage = await cloudinary.uploader.upload(postImage, {
+      folder: "postImages",
+    });
+
     // console.log("owner", owner);
     const user = await Users.findById(owner);
     // console.log(user);
     const post = await Posts.create({
       owner,
       caption,
+      image: {
+        publicId: cloudImage.public_id,
+        url: cloudImage.url,
+      },
     });
 
     // we need to appednd or add the post id to the posts array in the user model
