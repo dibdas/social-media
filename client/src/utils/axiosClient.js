@@ -4,9 +4,9 @@ import {
   KEY_ACCESS_TOKEN,
   removingItemFromLocalStorage,
   gettingItemFromLocalStorage,
-  settingItemFromLocalStorage,
+  // settingItemFromLocalStorage,
   // getItem,
-  // setItem,
+  setItem,
   // removeItem,
 } from "../utils/localStorageManager.js";
 
@@ -29,13 +29,15 @@ axiosClient.interceptors.request.use(
   // (config)=>{
   // any name can be given to it
   (request) => {
-    const accessToken = gettingItemFromLocalStorage();
+    const accessToken = gettingItemFromLocalStorage(KEY_ACCESS_TOKEN);
+    console.log(accessToken);
     // the backend is expecting the request like this with Bearer space string access token
     // the backend is also checking that authorization header inside the request
     // so sending authorization inside headers and attaching accessToken to it like as below
     // in every request we  need to put access token inside the authorization header
     // putting accessToken in the authorization header
     request.headers["Authorization"] = `Bearer ${accessToken}`;
+    console.log(request);
     return request;
   },
   (error) => {
@@ -47,11 +49,11 @@ axiosClient.interceptors.response.use(
     console.log(response);
     const data = response.data;
     const statusCode = data.statusCode;
-    const error = data.error;
+    const error = data.message;
     if (data.status === "ok") {
       // if the status is ok then whichever componenet did the api call will recieve the data
       console.log("ok", response);
-      return data;
+      return data.result;
     }
     console.log("oi");
     // original Request is the api request frontend to backend to fetch resources
@@ -111,10 +113,8 @@ axiosClient.interceptors.response.use(
         // so hitting refresh api to get the new access token and saving the the new access token
         // in the local storage
         // saving the new access oken inside the local storage
-        settingItemFromLocalStorage(
-          KEY_ACCESS_TOKEN,
-          axiosResponse.data.result.newaccessToken
-        );
+        // settingItemFromLocalStorage(
+        setItem(KEY_ACCESS_TOKEN, axiosResponse.data.result.newaccessToken);
         // after saving the new access token in the local storage ,we are send it attaching it with the
         // authoriation header of the original request i.e post/all , from the request where the error came
         // passing the newaccessToken inside the authorization header of the original request from where
