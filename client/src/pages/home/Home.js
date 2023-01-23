@@ -21,7 +21,6 @@ function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
     console.log("home");
-    console.log(dispatch);
     // after reqire uer user home Component gets loaded , whenever home component gets loaded
     // dispatch the action getMyInfo to fetch data from the backend ,getMyInfo do an async call
     dispatch(getMyInfo());

@@ -6,23 +6,23 @@ import axiosClient from "../../utils/axiosClient";
 // basically through one action we can dispatch other actions , by using thunkAPI
 export const getMyInfo = createAsyncThunk(
   "/users/getMyInfo",
-  async (body, thunkAPI) => {
+  // async (body, thunkAPI) => {
+  // as body is declared but not used so writing underscrore in place of that "_"
+  async (_, thunkAPI) => {
     try {
       // dispatching the setLoading action
       thunkAPI.dispatch(setLoading(true));
-      console.log("asyncthunk");
+      console.log("asyncthunkgetMyInfo");
       const responseAsyncThunk = await axiosClient.get("/users/getMyInfo");
-      console.log(
-        `api called from getInfo configSlice`,
-        responseAsyncThunk.data.result
-      );
+
+      console.log(`api called from getInfo configSlice`, responseAsyncThunk);
       // return statement goes to the extraReducers build addCase getInfo fulfilled in the
       //  action.payload
       // returning  the action.payload
-      return responseAsyncThunk.data.result;
+      return responseAsyncThunk;
     } catch (err) {
       // if data does not come we can throw the error
-      console.log(err);
+      // console.log(err);
       return Promise.reject(err);
     } finally {
       // dispatching another action from here
@@ -31,8 +31,28 @@ export const getMyInfo = createAsyncThunk(
   }
 );
 export const updateMyProfile = createAsyncThunk(
-  "user/updateMyProfile",
-  async (body, thunkAPI) => {}
+  "user/updatemyprofile",
+  async (body, thunkAPI) => {
+    try {
+      console.log(`asynsthunupdate myInfo`);
+      thunkAPI.dispatch(setLoading(true));
+      const responseUpdateProfileThunk = await axiosClient.put(
+        "user/updatemyprofile",
+        // inside the body we pass name bio and userImage
+        body
+      );
+      console.log(responseUpdateProfileThunk);
+      //getting the updated profile containes updated data
+      // when we get the response of the updated profile data we update my profile with action.payload
+
+      return responseUpdateProfileThunk.result;
+    } catch (err) {
+      console.log(err);
+      return Promise.reject(err);
+    } finally {
+      thunkAPI.dispatch(setLoading(false));
+    }
+  }
 );
 
 const appConfigSlice = createSlice({
@@ -45,8 +65,8 @@ const appConfigSlice = createSlice({
   reducers: {
     setLoading: (state, action) => {
       state.isLoading = action.payload;
-      console.log(state.isLoading);
-      console.log(action.payload);
+      // console.log(state.isLoading);
+      // console.log(action.payload);
     },
   },
   // you need to pass or add extraReducer , when we introduce  asyncthunk in it
@@ -54,12 +74,16 @@ const appConfigSlice = createSlice({
   extraReducers: (builder) => {
     // when builder.addcase is getting fulfilled then  we want whatever data we get ,it should be saved
     // in the profile
-    builder.addCase(getMyInfo.fulfilled, (state, action) => {
-      console.log(action.payload.user);
-      // after getting from the above and it comes inside the action.payload , we update the
-      // myProfile state
-      state.myProfile = action.payload.user;
-    });
+    builder
+      .addCase(getMyInfo.fulfilled, (state, action) => {
+        console.log(action.payload);
+        // after getting from the above and it comes inside the action.payload , we update the
+        // myProfile state
+        state.myProfile = action.payload;
+      })
+      .addCase(updateMyProfile.fulfilled, (state, action) => {
+        state.myProfile = action.payload.user;
+      });
   },
 });
 
