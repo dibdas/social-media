@@ -4,6 +4,7 @@ import axiosClient from "../../utils/axiosClient";
 import {
   KEY_ACCESS_TOKEN,
   settingItemFromLocalStorage,
+  setItem,
 } from "../../utils/localStorageManager";
 import "./Login.scss";
 
@@ -21,10 +22,11 @@ function Login() {
       });
 
       console.log(result);
-      settingItemFromLocalStorage(
-        KEY_ACCESS_TOKEN,
-        JSON.stringify(result.accessToken)
-      );
+      // settingItemFromLocalStorage(
+      // setItem(KEY_ACCESS_TOKEN, JSON.stringify(result.accessToken));
+      setItem(KEY_ACCESS_TOKEN, result.accessToken);
+      console.log(result.accessToken);
+      console.log("logged in ");
       navigate("/");
     } catch (error) {
       console.log(error);
