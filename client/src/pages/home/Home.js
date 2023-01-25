@@ -24,7 +24,7 @@ function Home() {
     // after reqire uer user home Component gets loaded , whenever home component gets loaded
     // dispatch the action getMyInfo to fetch data from the backend ,getMyInfo do an async call
     dispatch(getMyInfo());
-  }, []);
+  }, [dispatch]);
   return (
     <>
       {/* <Link to="/login">Log In</Link>

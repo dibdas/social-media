@@ -51,6 +51,7 @@ p{
 .btn-primary{
   background-color: var(--accent-color);
   color: wheat;
+  padding: 0.6em;
 }
 .btn-primary:hover{
   background-color: rgba(215, 163, 41, 0.982);
