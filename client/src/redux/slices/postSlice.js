@@ -55,17 +55,21 @@ const postSlice = createSlice({
       .addCase(likeAndUnlikePost.fulfilled, (state, action) => {
         // we get the post inside the action payload
         const post = action.payload.post;
-        console.log(post._id);
+        console.log("post slice", post._id);
         // checking whether the post present inside the userProfile modifiedPost or not
         // where isLiked and likesCount is present
         // thats why finding the index
-        const index = state.userProfile.modifiedPosts.findIndex(
+        console.log(
+          "modified Post ",
+          state?.userProfile?.modifiedPosts?.length
+        );
+        const index = state?.userProfile?.modifiedPosts?.findIndex(
           (item) => item._id === post._id
         );
-        console.log(`like slice ${index}`);
+        console.log(`like in post slice`, index);
         // it means post is found so checking whether the index ids -1 or not
         // if index is -1 post not found
-        if (index !== -1) {
+        if (index !== undefined && index !== -1) {
           // updating that index post means that particular post with this new value of post such
           // that likeCount and isLiked is getting updated
           state.userProfile.modifiedPosts[index] = post;
