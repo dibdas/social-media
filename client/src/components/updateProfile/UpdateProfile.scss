@@ -2,54 +2,53 @@
     margin-top: 2em;
     .container{
         display:flex;
-    }
-    .left-side{
-        flex:1;
-        text-align: center;
-        .input-user-image {
-            display: flex;
-            align-items: center;
-            border:2px dashed solid red;
-            justify-content: center;
-            width:90%;
-            height:20vh;
-            cursor: pointer;
-            img{
-            width:6em;
-            height:6em;
-            border-radius: 50%;
-            object-fit: cover;
-            }
-            .input-Image{
-                display: none;
-            }
-        }
-           
-
-    }
-    .right-side{
-        flex:2;
-        form{
-            width:100%;
-        }
-      
-        input{
-            display: block;
-            margin-block:0.7em;
-            padding:0.5em;  
-            width: 80%; 
-            border-radius:5px;
-        }
-        button{
-            padding:0.6em;
-        }
-        .delete-account{
-            margin-top: 2em;
-            background-color: red;
-            padding:1em;
+        .left-side{
+            flex:1;
+            text-align: center;
+            .input-user-image {
+                display: flex;
+                align-items: center;
+                border:2px dashed solid red;
+                justify-content: center;
+                width:90%;
+                height:20vh;
+                cursor: pointer;
+                img{
+                width:6em;
+                height:6em;
+                border-radius: 50%;
+                object-fit: cover;
+                }
+                .input-Image{
+                    display: none;
+                }
+            }  
 
         }
+        .right-side{
+            flex:2;
+            form{
+                width:100%;
+            }
         
+            input{
+                display: block;
+                margin-block:0.7em;
+                padding:0.5em;  
+                width: 80%; 
+                border-radius:5px;
+            }
+            button{
+                padding:0.6em;
+            }
+            .delete-account{
+                margin-top: 2em;
+                background-color: red;
+                padding:1em;
 
+            }
+            
+        }
     }
+
 }

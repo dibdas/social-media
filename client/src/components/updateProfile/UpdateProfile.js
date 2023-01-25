@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./UpdateProfile.scss"; // make themes google search social media themes
 import userImg from "../../assets/hacker.png";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/slices/appConfigSlice";
+import { setLoading, updateMyProfile } from "../../redux/slices/appConfigSlice";
 
 function UpdateProfile() {
   const [name, setName] = useState("");
@@ -12,7 +12,9 @@ function UpdateProfile() {
   const myProfileInfo = useSelector(
     (state) => state.appConfigReducer.myProfile
   );
+  console.log(myProfileInfo);
   useEffect(() => {
+    console.log("useeffect", bio);
     // in the begining the value of name, bio which is declared in the form input
     // is null or can be null , when it is null it becomes uncontrolled input
     // thus when name and bio gets the actual value , it becomes controlled input
@@ -20,9 +22,9 @@ function UpdateProfile() {
     // therefor to remove the warning introdncing ||" " , which means if we
     // if we recieve null from the myProfileInfo then we will return "" i.e empty
     // which remove the warning of uncontrolled input
-    setName(myProfileInfo?.name || "");
-    setBio(myProfileInfo?.bio || "");
-    // setUserImage(myProfileInfo?.avatar.url||"");
+    setName(myProfileInfo?.user?.name || "");
+    setBio(myProfileInfo?.user?.bio || "");
+    setUserImage(myProfileInfo?.user?.avatar?.url || "");
     // in the begining  myProfileInfo may be null ,as the value inside the myProfileInfo may come later
     // as it is a async function , so if the data inside the myProfileInfo comes later ,the component
     // wont come to know about the update therefore putting myProfileInfo inside the dependency array so that
@@ -51,13 +53,16 @@ function UpdateProfile() {
   }
   function handleSubmit(event) {
     event.preventDefault();
-    try {
-      dispatch(setLoading(true));
-    } catch (err) {
-      console.log(err);
-    } finally {
-      dispatch(setLoading(false));
-    }
+    console.log("handlesubmit");
+    // moving the setLoading dispatcher to appConfigSlice
+    // try {
+    //   dispatch(setLoading(true));
+    // } catch (err) {
+    //   console.log(err);
+    // } finally {
+    //   dispatch(setLoading(false));
+    // }
+    dispatch(updateMyProfile({ name, bio, userImage }));
   }
   return (
     <div className="UpdateProfile">
