@@ -46,6 +46,7 @@ const userRequire = async (req, res, next) => {
     req._id = decodedVerifiedToken._id; // gettig id from the decoded token and sending it as request to the next function
     req.email = decodedVerifiedToken.email; // geting the email from the decode token and it as request to the next function
     console.log("req.email", req.email);
+    console.log("req id", req._id);
     // req user also means that the user should be present inside the database also
     // not just being the valid access token ,
     // req user should be there unside the database also
@@ -61,7 +62,7 @@ const userRequire = async (req, res, next) => {
     //  as error from try  catch block and the function error is contradicting,
     //  therefore making the error from try catch block as  err
   } catch (err) {
-    console.log(err);
+    console.log("err user require", err);
     // access token got expired
     // return res.status(401).json({ message: `Invalid access key` });
     return res.send(
