@@ -60,6 +60,7 @@ const appConfigSlice = createSlice({
   // initialState can accessed anywhre inside the app a
   initialState: {
     isLoading: false,
+    toastData: {},
     myProfile: {},
   },
   reducers: {
@@ -67,6 +68,9 @@ const appConfigSlice = createSlice({
       state.isLoading = action.payload;
       // console.log(state.isLoading);
       // console.log(action.payload);
+    },
+    showingToast: (state, action) => {
+      state.toastData = action.payload;
     },
   },
   // you need to pass or add extraReducer , when we introduce  asyncthunk in it
@@ -88,4 +92,4 @@ const appConfigSlice = createSlice({
 });
 
 export default appConfigSlice.reducer;
-export const { setLoading } = appConfigSlice.actions;
+export const { setLoading, showingToast } = appConfigSlice.actions;
