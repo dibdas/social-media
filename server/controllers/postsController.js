@@ -21,7 +21,7 @@ const createPostController = async (req, res) => {
       return res.send(error(400, `all field are required`));
     }
     if (!postImage) {
-      return req.send(error(400, `post Image required `));
+      return res.send(error(400, `post Image required `));
     }
 
     const cloudImage = await cloudinary.uploader.upload(postImage, {

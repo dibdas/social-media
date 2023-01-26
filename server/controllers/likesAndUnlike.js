@@ -1,12 +1,15 @@
 const Posts = require("../models/Post");
 const { success, error } = require("../utils/responseWrapper");
+const { mapPostOutput } = require("../utils/Utils");
+
 const likeandUnlikePostController = async (req, res) => {
   try {
     const { postId } = req.body; // getting the post id
     // current user or the looged in user got the id from req.header from the middleware
     const currentUserId = req._id;
     console.log(currentUserId);
-    const post = await Posts.findById(postId);
+    // const post = await Posts.findById(postId);
+    const post = await Posts.findById(postId).populate("owner");
     if (!post) {
       return res.send(error(404, "post not found"));
     }
@@ -26,7 +29,11 @@ const likeandUnlikePostController = async (req, res) => {
       post.likes.splice(index, 1);
       const newLikesArray = await post.save();
       console.log(newLikesArray);
-      return res.send(success(201, `successfully unlike the post`));
+      // return res.send(success(201, `successfully unlike the post ${post}`));
+      // send the post in a new format like the mapPostOutput
+      const formattedPost = mapPostOutput(post, req._id);
+      console.log("successfully unliked the post", formattedPost);
+      return res.send(success(201, { post: formattedPost }));
     }
     // this block is for liking the post
     // else block means currentUserId is not present in likes Array, that means want to like the post
@@ -36,7 +43,11 @@ const likeandUnlikePostController = async (req, res) => {
       console.log(post.likes);
       const newLikesArray = await post.save();
       console.log(newLikesArray);
-      return res.send(success(201, `successfully like the post`));
+      // return res.send(success(201, `successfully like the post ${post}`));
+      // sending the post in the new format like the  mapPostOutput
+      const formattedPost = mapPostOutput(post, req._id);
+      console.log("successfully liked the post", formattedPost);
+      return res.send(success(201, { post: formattedPost }));
     }
   } catch (err) {
     console.log(err);
