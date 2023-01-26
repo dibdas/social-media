@@ -47,8 +47,8 @@ const createPostController = async (req, res) => {
     // console.log("posts", post);
     // console.log("user", user);
 
-    // console.log("userSavedPost", userSavedPost);
-    return res.send(success(201, post));
+    console.log("userSavedPost", userSavedPost);
+    return res.send(success(201, { post }));
   } catch (err) {
     console.log(err);
     return res.send(error(500, err));

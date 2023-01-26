@@ -7,8 +7,9 @@ const { mapPostOutput } = require("../utils/Utils");
 // map this response so that frontend show the output in a better format
 const getUserProfileController = async (req, res) => {
   try {
-    const userId = req.body.userId;
-    console.log(userId);
+    const { userId } = req.body;
+    console.log(req.body);
+    console.log("userId in  getUserProfileController", userId);
 
     // populating all the posts of the owner and poulating owner details of all the posts
     const user = await Users.findById(userId).populate({
@@ -28,7 +29,7 @@ const getUserProfileController = async (req, res) => {
     const modifiedPosts = fullPosts
       .map((items) => mapPostOutput(items, req._id))
       .reverse();
-    // console.log(modifiedPosts);
+    console.log(modifiedPosts);
     // when we do the User.findById , we get a lot of information which includes
     // mongoose information also inside the user,
     //  hence user._doc contains the actual relevent information , which is relevent to the schema
