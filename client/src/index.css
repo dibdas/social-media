@@ -40,6 +40,8 @@ p{
 }
 .hover-link{
   cursor: pointer;
+  padding:1em;
+  
 }
 .hover-link:active{
   color:rgba(125, 15, 234, 0.823);
