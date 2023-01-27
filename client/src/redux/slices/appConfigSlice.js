@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosClient from "../../utils/axiosClient";
+// to optimize the code moving alll the thunkPI to axiosClient
+
 // user/getMyInfo is the name of the async thunk,
 // body-> pass any data inside body
 // thunkAPI-> with the help of thunk API ,we can dispatch other actions through one dispatcher,so
@@ -11,7 +13,8 @@ export const getMyInfo = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       // dispatching the setLoading action
-      thunkAPI.dispatch(setLoading(true));
+      // to optimize the code moving alll the thunkPI to axiosClient
+      // thunkAPI.dispatch(setLoading(true));
       console.log("asyncthunkgetMyInfo");
       const responseAsyncThunk = await axiosClient.get("/users/getMyInfo");
 
@@ -26,7 +29,7 @@ export const getMyInfo = createAsyncThunk(
       return Promise.reject(err);
     } finally {
       // dispatching another action from here
-      thunkAPI.dispatch(setLoading(false));
+      // thunkAPI.dispatch(setLoading(false));
     }
   }
 );
@@ -35,7 +38,8 @@ export const updateMyProfile = createAsyncThunk(
   async (body, thunkAPI) => {
     try {
       console.log(`asynsthunupdate myInfo`);
-      thunkAPI.dispatch(setLoading(true));
+      // to optimize the code moving alll the thunkPI to axiosClient
+      // thunkAPI.dispatch(setLoading(true));
       const responseUpdateProfileThunk = await axiosClient.put(
         "user/updatemyprofile",
         // inside the body we pass name bio and userImage
@@ -45,12 +49,13 @@ export const updateMyProfile = createAsyncThunk(
       //getting the updated profile containes updated data
       // when we get the response of the updated profile data we update my profile with action.payload
 
-      return responseUpdateProfileThunk.result;
+      return responseUpdateProfileThunk;
     } catch (err) {
       console.log(err);
       return Promise.reject(err);
     } finally {
-      thunkAPI.dispatch(setLoading(false));
+      // to optimize the code moving alll the thunkPI to axiosClient
+      // thunkAPI.dispatch(setLoading(false));
     }
   }
 );
@@ -86,7 +91,7 @@ const appConfigSlice = createSlice({
         state.myProfile = action.payload;
       })
       .addCase(updateMyProfile.fulfilled, (state, action) => {
-        state.myProfile = action.payload.user;
+        state.myProfile = action.payload;
       });
   },
 });
