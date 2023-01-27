@@ -1,5 +1,12 @@
 import axios from "axios";
 import { token } from "morgan";
+import { TOAST_FAILURE } from "../App.js";
+import { setLoading, showingToast } from "../redux/slices/appConfigSlice.js";
+
+// as axiosClient  is not a component , so actions cant be dispatched from here, thats why we
+// are importing store here
+import store from "../redux/store.js";
+
 import {
   KEY_ACCESS_TOKEN,
   removingItemFromLocalStorage,
@@ -38,6 +45,7 @@ axiosClient.interceptors.request.use(
     // putting accessToken in the authorization header
     request.headers["Authorization"] = `Bearer ${accessToken}`;
     console.log(request);
+    store.dispatch(setLoading(true));
     return request;
   },
   (error) => {
@@ -46,6 +54,7 @@ axiosClient.interceptors.request.use(
 );
 axiosClient.interceptors.response.use(
   async (response) => {
+    store.dispatch(setLoading(false));
     console.log(response);
     const data = response.data;
     const statusCode = data.statusCode;
@@ -60,6 +69,8 @@ axiosClient.interceptors.response.use(
     const originalRequest = response.config;
     console.log(originalRequest);
     console.log(response);
+
+    store.dispatch(showingToast({ type: TOAST_FAILURE, message: error }));
 
     // this will logout the user ,
     // when the refresh token is expired and user is send to the login page by reloading
@@ -140,9 +151,15 @@ axiosClient.interceptors.response.use(
     // if the error is neither 401 nor refresh api error then send the response error where the
     // request being sent
     return Promise.reject(data.error);
-  }
+  },
   // (error) => {
   // console.log(error);
   // }
+  // this for the interception of error which are not from the server may be like the newtwok error
+  async (err) => {
+    store.dispatch(setLoading(false));
+    store.dispatch(showingToast({ type: TOAST_FAILURE, message: err.message }));
+    return Promise.reject(err);
+  }
 );
 export default axiosClient;
