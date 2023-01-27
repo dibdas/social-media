@@ -5,7 +5,13 @@ import "./Navbar.scss";
 import { FiLogOut } from "react-icons/fi";
 import LoadingBar from "react-top-loading-bar";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/slices/appConfigSlice";
+import { setLoading, updateMyProfile } from "../../redux/slices/appConfigSlice";
+import axiosClient from "../../utils/axiosClient";
+import {
+  KEY_ACCESS_TOKEN,
+  removingItemFromLocalStorage,
+} from "../../utils/localStorageManager";
+import { useEffect } from "react";
 
 function Navbar() {
   // dispatch is not required now as we are not dispatching anythng as of but keeping
@@ -13,6 +19,9 @@ function Navbar() {
   const navigate = useNavigate();
   const myProfileInfo = useSelector(
     (state) => state.appConfigReducer.myProfile
+  );
+  const upDateMyProfileInfo = useSelector(
+    (state) => state.appConfigReducer.updateMyProfile
   );
   console.log(myProfileInfo);
   // moving the loadingRef to app.js
@@ -30,7 +39,22 @@ function Navbar() {
   // loadingRef.current.continuousStart();
   // }
   // }
-  function handleLogoutClicked() {}
+  async function handleLogoutClicked(event) {
+    event.preventDefault();
+    try {
+      // moving setLoading to axios client to optimize the code
+      // dispatch(setLoading(true));
+      await axiosClient.post("/auth/logout");
+      removingItemFromLocalStorage(KEY_ACCESS_TOKEN);
+      navigate("/login");
+      // moving setLoading to axios client to optimize the code
+      // dispatch(setLoading(false));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  // useEffect(() => {}, [upDateMyProfileInfo]);
+
   return (
     <div className="navbar">
       {/* moving the loading bar to the app.js */}
