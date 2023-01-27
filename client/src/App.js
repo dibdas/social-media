@@ -11,9 +11,15 @@ import { useSelector } from "react-redux";
 import { useRef, useEffect } from "react";
 import LoadingBar from "react-top-loading-bar";
 
+import CheckLoggedIn from "./components/CheckLoggedIn";
+import toast, { Toaster } from "react-hot-toast";
+export const TOAST_SUCCESS = "toast_success";
+export const TOAST_FAILURE = "toast_failure";
+
 function App() {
   //  inside the appConfigReducer we the all the state,out of all the state , we get is Loading
   const isLoading = useSelector((state) => state.appConfigReducer.isLoading);
+  const toastData = useSelector((state) => state.appConfigReducer.toastData);
   const loadingRef = useRef(null);
 
   useEffect(() => {
@@ -34,10 +40,24 @@ function App() {
       loadingRef.current?.complete();
     }
   }, [isLoading]);
+  useEffect(() => {
+    // eslint-disable-next-line default-case
+    switch (toastData.type) {
+      case TOAST_SUCCESS:
+        toast.success(toastData?.message);
+        break;
+      case TOAST_FAILURE:
+        toast.error(toastData?.message);
+        break;
+    }
+  }, [toastData]);
 
   return (
     <div className="App">
       <LoadingBar color="#f11946" ref={loadingRef} height={6} />
+      <div>
+        <Toaster />
+      </div>
       <Routes>
         <Route element={<RequireUser />}>
           {/* protected Route */}
@@ -59,8 +79,12 @@ function App() {
             <Route path="/updateprofile/:userId" element={<UpdateProfile />} />
           </Route>
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        {/* if the user is there i.e access token is present then then move it to home page , otherwise */}
+        {/* move to log or sign up  */}
+        <Route element={<CheckLoggedIn />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
       </Routes>
     </div>
   );
