@@ -13,7 +13,7 @@ orherwise we sent you to login page  */
   }
   // if we do have the access tken key then the user is loggedin
   const user = gettingItemFromLocalStorage(KEY_ACCESS_TOKEN);
-  // return user ? <Outlet /> : <Navigate to="/login" />;
+  return user ? <Outlet /> : <Navigate to="/login" />;
   return <Outlet />;
 }
 
