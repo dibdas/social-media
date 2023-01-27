@@ -1,6 +1,8 @@
 // here post is the mongodb post , which contains Id, caption , image ,and mongodb object of the owner
 
 // userId is the logged in userId
+var ta = require("time-ago");
+
 const mapPostOutput = (post, userId) => {
   return {
     _id: post._id,
@@ -17,6 +19,7 @@ const mapPostOutput = (post, userId) => {
     // checking whether userId present inside the likes array or notify,
     // if its there that means the post has been liked by the logged user i.e userId
     isLiked: post.likes.includes(userId),
+    timeAgo: ta.ago(post.createdAt),
   };
 };
 

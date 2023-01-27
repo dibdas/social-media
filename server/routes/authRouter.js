@@ -4,6 +4,7 @@ const {
   refreshAccessTokenController,
   deleteMyProfileController,
   updateMyProfileContoller,
+  logoutController,
 } = require("../controllers/authController");
 const userRequire = require("../middlewares/requireUser");
 
@@ -13,7 +14,7 @@ router.post("/login", loginController);
 // router.post("/refresh", refreshAccessTokenController);
 // transforming '/refresh' into GET request as we are not passing the refresh token in the body JSON
 router.get("/refresh", refreshAccessTokenController);
-router.post("/logout", loginController);
+router.post("/logout", logoutController);
 router.post("/deleteprofile", userRequire, deleteMyProfileController);
 
 module.exports = router;
