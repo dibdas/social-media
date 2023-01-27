@@ -5,7 +5,8 @@ import { likeAndUnlikePost } from "./postSlice";
 
 export const getFeedData = createAsyncThunk("get/feed", async (_, thunkAPI) => {
   try {
-    thunkAPI.dispatch(setLoading(true));
+    // moving setLoading to axios client to optimize the code
+    // thunkAPI.dispatch(setLoading(true));
     console.log("getFedd data ");
     const getFeedResponse = await axiosClient.get("user/getfeed");
     console.log(getFeedResponse);
@@ -14,7 +15,8 @@ export const getFeedData = createAsyncThunk("get/feed", async (_, thunkAPI) => {
     console.log(err);
     return Promise.reject(err);
   } finally {
-    thunkAPI.dispatch(setLoading(false));
+    // moving setLoading to axios client to optimize the code
+    // thunkAPI.dispatch(setLoading(false));
   }
 });
 
@@ -22,7 +24,8 @@ export const followAndUnfollow = createAsyncThunk(
   "user/followAndUnfollow",
   async (body, thunkAPI) => {
     try {
-      thunkAPI.dispatch(setLoading(true));
+      // moving setLoading to axios client to optimize the code
+      // thunkAPI.dispatch(setLoading(true));
       const followUnfollowResponse = await axiosClient.post(
         "user/follow",
         body
@@ -34,7 +37,8 @@ export const followAndUnfollow = createAsyncThunk(
       // console.log(err);
       return Promise.reject(err);
     } finally {
-      thunkAPI.dispatch(setLoading(false));
+      // moving setLoading to axios client to optimize the code
+      // thunkAPI.dispatch(setLoading(false));
     }
   }
 );
