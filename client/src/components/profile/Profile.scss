@@ -23,6 +23,9 @@
         border-radius:4px;
       text-align: center;
       padding: 1em;
+      .bio{
+        padding-block:0.6em;
+      }
       
         .user-image{
             width:5em;
@@ -37,10 +40,15 @@
           display: flex;
       justify-content: center;
       align-items: center;
-      
             gap:0.5em;
             width:30%;
+            
             margin-inline: auto;
+            
+        }
+        .follow-link{
+            color: blueviolet;
+            
         }
         .follow,.update-profile{
             padding:0.7em;
