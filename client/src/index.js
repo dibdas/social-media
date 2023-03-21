@@ -20,6 +20,7 @@ root.render(
   // with the help of HasHrouter, routes work properly , after the deployment
   <HashRouter>
     {/* Provider can be written inside or outside the BrowserRouter, they are independent to each other */}
+
     <Provider store={store}>
       <App />
     </Provider>
